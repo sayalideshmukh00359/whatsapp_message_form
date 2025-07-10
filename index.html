@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Send WhatsApp Message</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Send WhatsApp Message</h2>
+
+    <!-- Form -->
+    <form id="messageForm">
+      <label for="mobile">Mobile Number</label>
+      <input type="text" id="mobile" name="mobile" placeholder="+91XXXXXXXXXX" required />
+
+      <label for="message">Message</label>
+      <textarea id="message" name="message" rows="4" required>Would you like to book an appointment with us?</textarea>
+
+      <button type="submit">Send</button>
+    </form>
+
+    <!-- Success Message -->
+    <div id="successMsg" class="success-message" style="display: none;">
+      <div class="circle-icon">&#10003;</div>
+      <p class="success-text">Message sent successfully</p>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("messageForm");
+    const successMsg = document.getElementById("successMsg");
+  
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+  
+      const mobile = document.getElementById("mobile").value.trim();
+      const message = document.getElementById("message").value.trim();
+  
+      if (!mobile || !message) {
+        alert("Please enter both mobile number and message.");
+        return;
+      }
+  
+      // Open WhatsApp Web with pre-filled message
+      const phone = mobile.replace(/\D/g, ""); // remove any non-digits
+      const encodedMessage = encodeURIComponent(message);
+      const whatsappURL = `https://wa.me/${phone}?text=${encodedMessage}`;
+      
+      window.open(whatsappURL, "_blank");
+  
+      // Hide form, show success message
+      form.style.display = "none";
+      successMsg.style.display = "flex";
+  
+      // Reset after 10 seconds
+      setTimeout(() => {
+        form.reset();
+        form.style.display = "block";
+        successMsg.style.display = "none";
+      }, 120000);
+    });
+  </script>
+  
+</body>
+</html>
